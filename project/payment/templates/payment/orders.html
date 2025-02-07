@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class=" py-5">
+    <div class="container">
+        <div class="text-center">
+
+        </div>
+    </div>
+</header>
+<br><br>
+<div class="container">
+    <div class="container">
+
+        <div class="card">
+            <div class="card-header">
+              {{order.id}} - ${{order.amount_paid}}
+            </div>
+            <div class="card-body">
+                Email : {{order.email}} <br>
+                {% if order.date_shipped %}
+                    Date Shipped : {{order.date_shipped}} <br>
+                {% else %}
+                    Date Ordered : {{order.date_ordered}} <br>
+                {% endif %}
+
+                <br>
+                Full Name : {{order.full_name}} <br>
+                <pre>Shipping Address : {{order.shipping_address}}</pre> 
+                Items :
+                {% for item in items %}
+                    {{item.product}} - {{item.quantity }} - ${{item.price}} <br>
+                {% endfor %}
+                <br><br>
+                {% if order.shipped %}
+                    <form  method='POST'>
+                        {% csrf_token %}
+                        <input type="hidden" name='status' value='False'>
+                        <button type='submit' class='btn btn-danger'>Mark As Un-Shipped</button>
+                    </form>
+                {% else %}
+                    <form method='POST'>
+                        {% csrf_token %}
+                        <input type="hidden" name='status' value='True'>
+                        <button type='submit' class='btn btn-success'>Mark As Shipped</button>
+                    </form>
+                
+                    
+                    
+                {% endif %}
+
+
+            </div>
+          </div>
+
+        
+    </div>
+</div>
+  <br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br>
+
+
+{% endblock content %}
+
+

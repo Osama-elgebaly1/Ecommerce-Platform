@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Checkout</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Review your order... </p>
+        </div>
+    </div>
+</header>
+<br><br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                  Order Summary
+                </div>
+                <div class="card-body">
+                    {% for product in products %}
+                            {{product.name}}
+                            <br>
+
+                            {% if product.price_after_dis != 0 and product.price != product.price_after_dis%}
+
+                                <span class="text-muted text-decoration-line-through">Price : {{product.price}}$</span>
+                                Price : {{product.price_after_dis}}$
+                            {% else %}
+                                <span class="">Price : {{product.price}}$</span>
+                      
+                            {% endif %}
+                            
+                            {% for key,value in quantities.items %}
+                                {% if key == product.id|slugify %}
+                                     <option selected>Quantity : {{value}}</option>
+                                {% endif %}
+                          
+                            {% endfor %}
+                            
+                      <hr>
+                    {% endfor %}
+                    <strong> Total : $ {{total}}</strong>
+                    <br><br>
+                    <a href="{% url "cart_summary" %} " class='btn brn-sm btn-outline-secondary'>Update Items</a>
+                   
+
+
+
+
+                </div>
+              </div>
+              <br>
+              <div class="card">
+                <div class="card-header">
+                    Shippin Info 
+                  </div>
+                <div class="card-body">
+                    <form method="POST" action='{% url "billing_info" %}'>
+                        {% csrf_token %}
+                        {{shipping_form.as_p}}
+                        <button type='submit' class='btn btn-secondary'>Contiue to Billing </button>
+
+
+
+                    </form>
+                   
+                </div>
+              </div>
+              <br>
+
+        </div>
+    </div>
+</div>
+<br><br><br><br><br><br><br><br><br>
+{% endblock content %}

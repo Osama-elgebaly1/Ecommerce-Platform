@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class=" py-5">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="display-4 fw-bolder">Shipped Items </h1>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="container">
+        <table class="table table-striped table-hover table-bordered ">
+            <thead class='table-dark'>
+              <tr>
+                <th scope="col">Order</th>
+                <th scope="col">Price</th>
+                <th scope="col">Customer Email</th>
+                <th scope="col">Date Shipped </th>
+                <th scope="col"> Shipped </th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+               <tr>
+                <td > <a href="{% url "orders" order.id %} ">{{order.id}}</td></a>
+                <td>{{order.amount_paid}}</td>
+                <td>{{order.email}} </td>
+                <td>{{order.date_shipped}} </td>
+                <td>
+                  <form method='POST'>
+                    {% csrf_token %}
+                    <input type="hidden" name='status' value='false'>
+                    <input type="hidden" name='num' value={{order.id}}>
+                    <button type='submin' class='btn btn-danger btn-sm'>Mark Un-shipped</button>
+                  </form>
+                </td>
+              </tr>
+            
+            {% endfor %}
+
+
+            </tbody>
+          </table>
+        
+    </div>
+</div>
+<br><br>
+
+<br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br>
+
+
+{% endblock content %}
