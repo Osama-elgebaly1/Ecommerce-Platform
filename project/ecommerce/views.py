@@ -133,19 +133,8 @@ def log(request):
                         cart = Cart(request)
                         product = Product.objects.get(id=key)
                         cart.add(product=product,quantity=value)
-                        
-
-
                 messages.success(request,'You have been logged in ...')
                 return redirect('home')
-
-            
-
-
-
-
-
-
 
             else:
                 messages.success(request,'User is not exist , please create an account...')
