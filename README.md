@@ -91,7 +91,7 @@ To add products, log in to the Django admin panel:
 ## **Demo Video**  
 *Upload your demo video and add a link here:*  
 ```markdown
-[Click here to watch the demo]()
+[Click here to watch the demo](https://github.com/Osama-elgebaly1/Ecommerce-Platform/blob/main/Video.mp4)
 ```
 
 ---
