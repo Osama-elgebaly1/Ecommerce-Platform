@@ -21,6 +21,22 @@ def summary(request):
 
 
 def add(request):
+'''    
+    Adds a product to the shopping cart.
+
+    This view handles AJAX POST requests to add a product to the session-based cart. 
+    It retrieves the product and quantity from the request, updates the cart, 
+    and returns a JSON response with the updated cart quantity.
+
+    Expected POST data:
+        - action (str): Should be 'post' to trigger the add operation.
+        - product_id (int): The ID of the product to add.
+        - product_qty (int): The quantity of the product to add.
+
+    Returns:
+        JsonResponse: A response containing the updated cart quantity.
+   
+'''
     # Get the cart
     cart = Cart(request)
     #  test for POST
@@ -45,6 +61,20 @@ def add(request):
 
 
 def cart_update(request):
+"""
+    Updates the quantity of a product in the shopping cart.
+
+    This view handles AJAX POST requests to modify the quantity of an 
+    existing product in the session-based cart.
+
+    Expected POST data:
+        - action (str): Should be 'post' to trigger the update operation.
+        - product_id (int): The ID of the product to update.
+        - product_qty (int): The new quantity of the product.
+
+    Returns:
+        JsonResponse: A response containing the updated quantity.
+    """
 	cart = Cart(request)
 	if request.POST.get('action') == 'post':
             product_id = int(request.POST.get('product_id'))
@@ -61,6 +91,19 @@ def cart_update(request):
 
 
 def cart_delete(request):
+"""
+    Removes a product from the shopping cart.
+
+    This view handles AJAX POST requests to delete a product from 
+    the session-based cart.
+
+    Expected POST data:
+        - action (str): Should be 'post' to trigger the delete operation.
+        - product_id (int): The ID of the product to remove.
+
+    Returns:
+        JsonResponse: A response confirming the deleted product ID.
+    """
         cart = Cart(request)
         if request.POST.get('action') == 'post':
               product_id = int(request.POST.get('product_id'))
