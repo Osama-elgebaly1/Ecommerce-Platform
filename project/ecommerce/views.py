@@ -13,6 +13,16 @@ from payment.models import ShippingAddress
 # Create your views here.
 
 def search(request):
+    """
+    Handles product search.
+
+    Retrieves products matching the search query from the database 
+    based on their name or description. Displays results or a 
+    message if no matches are found.
+
+    Returns:
+    HttpResponse: The search results page.
+    """
     if request.method == 'POST':
         searched = request.POST['searched']
         products = Product.objects.filter(Q(name__icontains = searched) | Q(description__icontains = searched))
@@ -26,6 +36,19 @@ def search(request):
 
 
 def update_info(request):
+    """
+    Updates user profile and shipping information.
+
+    If the user is authenticated, this view retrieves their profile 
+    and shipping details, pre-fills the forms, and updates the data 
+    upon form submission. If the update is successful, a success 
+    message is displayed, and the user is redirected home.
+
+    If the user is not authenticated, they are redirected to the login page.
+
+    Returns:
+    HttpResponse: The update info page or a redirect response.
+    """
     if request.user.is_authenticated:
         current_user  = ShippingAddress.objects.get(user_id = request.user.id)
         shipping_form = ShippingForm(request.POST or None ,instance=current_user)
@@ -46,6 +69,7 @@ def update_info(request):
     
 
 def update_password(request):
+    ''' Updating password  '''
     if request.user.is_authenticated:
         user = request.user
         if request.method == 'POST':
@@ -68,6 +92,18 @@ def update_password(request):
 
 
 def update_user(request):
+    """
+    Updates the logged-in user's account information.
+
+    If the user is authenticated, this view retrieves their profile, 
+    pre-fills the update form, and saves the changes upon submission. 
+    After updating, the user is re-authenticated and redirected home.
+
+    If the user is not logged in, they are redirected to the login page.
+
+    Returns:
+    HttpResponse: The update user page or a redirect response.
+    """
     if request.user.is_authenticated:
         user = User.objects.get(id=request.user.id)
         form = UpdateUserForm(request.POST or None , instance = user)
@@ -94,6 +130,17 @@ def about(request):
 
 
 def register(request):
+    """
+    Handles user registration.
+
+    Displays a registration form and processes user sign-up requests. 
+    If the form is valid, the user account is created, logged in automatically, 
+    and redirected to the home page. If registration fails, an error message 
+    is shown, and the user is redirected to the registration page.
+
+    Returns:
+    HttpResponse: The registration page or a redirect response.
+    """
     form = SignUpForm()
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -116,6 +163,19 @@ def register(request):
 
 
 def log(request):
+    """
+    Handles user login.
+
+    Displays a login form and processes authentication. If the credentials 
+    are valid, the user is logged in and redirected to the home page. 
+    If the user has an old cart saved, it is restored. 
+
+    - If authentication fails, an error message is displayed.
+    - If the user does not exist, they are prompted to register.
+
+    Returns:
+    HttpResponse: The login page or a redirect response.
+    """
     form = LoginForm()
     if request.method == 'POST':
         form = LoginForm(request,data=request.POST)
@@ -159,6 +219,7 @@ def out(request):
 
 
 def product(request,pk):
+    ''' Single Product Page  '''
     product = Product.objects.get(id=pk)
     related_products = Product.objects.filter(category=product.category)[:3]
     return render(request,'pages/product.html',{'product':product,
